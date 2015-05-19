@@ -5,10 +5,13 @@ Qlik Sense Extension to Show List of Tabs in a Qlik Sense App
 When completed, this app will list out all tabs in a Qlik Sense App
 
 Still to do:
-  List all tabs in div
-  Style individual tabs
-  Make each div selectable so it will send user to next tab
-  
+<UL>
+  <li>List all tabs in div</li>
+  <li>Style individual tabs</li>
+  <li>Make each div selectable so it will send user to next tab</li>
+</UL> 
 Nice to have:
-  Different styles
-  Show which tab is currently in view
+<UL>
+  <li>Different styles</li>
+  <li>Show which tab is currently in view</li>
+</UL>
