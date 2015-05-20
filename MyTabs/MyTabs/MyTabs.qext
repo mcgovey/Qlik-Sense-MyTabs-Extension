@@ -1,7 +1,0 @@
-{
-	"name" : "My Tabs",
-	"description" : "Application Tab Selection",
-	"type" : "visualization",
-	"version": "1.0",
-	"author": "Kevin McGovern"
-}
