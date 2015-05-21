@@ -6,8 +6,9 @@ Used bootstrap.js for tab styling
 ##########This extension is still a work in progress##########
 When completed, this app will list out all tabs in a Qlik Sense App
 
-Nice to have:
+Feature Requests:
 <UL>
+  <li>Remove title option from properties by default</li>
   <li>Different style selections</li>
-  <li>Show which tab is currently in view</li>
+  <li>Toggle Option for Justified/Unjustified</li>
 </UL>
