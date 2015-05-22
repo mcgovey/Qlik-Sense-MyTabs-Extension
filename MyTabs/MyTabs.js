@@ -10,15 +10,15 @@ define(["jquery",
 	"./js/bootstrap.min"
 	], 
 	function ($, qlik, cssContent, bsCssContent) {
-
+		//apply css styles to header
 		$( "<style>" ).html( cssContent ).appendTo( "head" );
-
+		//apply scoped Bootstrap CSS to header
 		$( "<style>" ).html( bsCssContent ).appendTo( "head" );
 
 		function render ( $elem, layout ) {
 				//create the app button group
 				var html = '', app = qlik.currApp();
-				//get app location and path
+				//get app location and path and save to URL global variable
 			    var appName = encodeURIComponent(app.id);
 	          	var http = location.protocol;
 	          	var slashes = http.concat("//");
@@ -36,30 +36,20 @@ define(["jquery",
 	            //set css element
 				$elem.css('overflow', 'auto');
 
-
 			    // Chart object width
 			    var width = $elem.width();
 			    // Chart object height
 			    var height = $elem.height();
 			    // Chart object id
 			    var id = "container_" + layout.qInfo.qId;
-			 
-			    // // Check to see if the chart element has already been created
-			    // if (document.getElementById(id)) {
-			    //     // if it has been created, empty it's contents so we can redraw it
-			    //     $("#" + id).empty();
-			    // }
-			    // else {
-			    //     // if it hasn't been created, create it with the appropiate id and size
-			    //     $elem.append($('<div />;').attr("id", id).width(width).height(height));
-			    // }
+
 				$elem.empty();
 
 
 				html += '<div id="navbar" class="navbar-collapse collapse twbs">';
 
 				//create a list box of navigation items
-				html += '<ul class="nav nav-tabs nav-justified">';
+				html += '<ul class="nav nav-tabs">';//nav-justified
 				//get list of tab objects and insert into div
 			  	app.getAppObjectList( 'sheet', function(reply){
 
@@ -79,8 +69,6 @@ define(["jquery",
 						html += '</li>';
 
 					});
-					// console.log(reply);//.qAppObjectList
-					// console.log(app);//.qAppObjectList
 
 					html += '</ul></div>';
 
@@ -102,8 +90,17 @@ define(["jquery",
 					//set the attribute for the list box of the active sheet to active
 					$('#' + activeSheetID).attr('class','active');
 
+					//Toggle Tab Justification	
+					if(layout.buttons.justified) {
+						$('ul.nav').toggleClass("nav-justified");
+					}
+					//Toggle navbar theme to inverted color scheme
+					if(layout.buttons.colored){
+						$('ul.nav').toggleClass("navbar-inverse");
+					}
+
 				});
-				
+
 		}
 
 		return {
@@ -119,20 +116,41 @@ define(["jquery",
 				qFieldListDef : {
 				}
 			},
-			definition: {
-                type: "items",
-                component: "accordion",
-                items: {
-                    appearance: {
-                        uses: "settings"
-                    }
-                }
-            },
-			resize: function ( $element, layout ) {
-				render( $element, layout );
-			},
-			paint: function ( $element, layout ) {
-				render( $element, layout );
+
+		definition : {
+			type : "items",
+			component : "accordion",
+			items : {
+				buttons : {
+					type : "items",
+					label : "Navbar Options",
+					items : {
+					//create boolean buttons for justification and color theme
+						justified : {
+							ref : "buttons.justified",
+							label : "Fit Tabs Across Full Page",
+							type : "boolean",
+							defaultValue : false
+						},
+						colored : {
+							ref : "buttons.colored",
+							label : "Invert Navigation Theme",
+							type : "boolean",
+							defaultValue : false
+						}
+					}
+				},
+				settings : {
+					uses : "settings"
+				}
 			}
-		};
+		},
+		resize: function ( $element, layout ) {
+			render( $element, layout );
+		},
+		paint: function ( $element, layout ) {
+			
+			render( $element, layout );
+		}
+	};
 });
