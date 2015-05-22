@@ -5,3 +5,6 @@
     float:				right;
 }
 
+ul.nav li{
+	cursor: pointer;
+}
