@@ -4,18 +4,19 @@ define(["jquery",
 	//mashup and extension interface
 	"qlik",
 	//add stylesheet
-	"text!./style.css",
+	// "text!./style.css",
 	//load bootstrap files
 	"text!./css/scoped-twbs.min.css",
+	"client.utils/state",
 	"./js/bootstrap.min"
 	], 
-	function ($, qlik, cssContent, bsCssContent) {
-		//apply css styles to header
-		$( "<style>" ).html( cssContent ).appendTo( "head" );
+	function ($, qlik, bsCssContent, State) {//, cssContent
+		// //apply css styles to header
+		// $( "<style>" ).html( cssContent ).appendTo( "head" );
 		//apply scoped Bootstrap CSS to header
 		$( "<style>" ).html( bsCssContent ).appendTo( "head" );
 
-		function render ( $elem, layout ) {
+		function render ( $elem, layout) {
 				//create the app button group
 				var html = '', app = qlik.currApp();
 				//get app location and path and save to URL global variable
@@ -46,7 +47,7 @@ define(["jquery",
 				$elem.empty();
 
 
-				html += '<div id="navbar" class="navbar-collapse collapse twbs">';
+				html += '<div id="navbar" class="navbar-collapse collapse twbs ' + id + '">';
 
 				//create a list box of navigation items
 				html += '<ul class="nav nav-tabs">';//nav-justified
@@ -75,28 +76,33 @@ define(["jquery",
 					//insert html into the extension object
 					$elem.html(html);//$("#" + id).
 
-					//find the location that the current tab is stored
-					var cacheName = app.model.session.cacheName;
+					// ------Method for getting active sheet ID using cache-----
 
-					if (cacheName.toLowerCase().indexOf("sheet/") >= 0){
-						// Add six to position of cacheName to offset the 'sheet/' index from above
-						var cacheNameSheetLoc = cacheName.toLowerCase().indexOf("sheet/")+6;
-						// find the end position of the sheet
-						var cacheNameSheetLocStop = cacheName.indexOf("/",cacheNameSheetLoc);
-						//get the active sheet ID
-						var activeSheetID = cacheName.substr(cacheNameSheetLoc,cacheNameSheetLocStop-cacheNameSheetLoc);
-					}
+					// //find the location that the current tab is stored
+					// var cacheName = app.model.session.cacheName;
+
+					// if (cacheName.toLowerCase().indexOf("sheet/") >= 0){
+					// 	// Add six to position of cacheName to offset the 'sheet/' index from above
+					// 	var cacheNameSheetLoc = cacheName.toLowerCase().indexOf("sheet/")+6;
+					// 	// find the end position of the sheet
+					// 	var cacheNameSheetLocStop = cacheName.indexOf("/",cacheNameSheetLoc);
+					// 	//get the active sheet ID
+					// 	var activeSheetID = cacheName.substr(cacheNameSheetLoc,cacheNameSheetLocStop-cacheNameSheetLoc);
+					// }
+
+					//get the active sheet ID
+					var activeSheetID = State.getModel().id;
 
 					//set the attribute for the list box of the active sheet to active
 					$('#' + activeSheetID).attr('class','active');
 
 					//Toggle Tab Justification	
 					if(layout.buttons.justified) {
-						$('ul.nav').toggleClass("nav-justified");
+						$('div.' + id + ' ul.nav').toggleClass("nav-justified");
 					}
 					//Toggle navbar theme to inverted color scheme
 					if(layout.buttons.colored){
-						$('ul.nav').toggleClass("navbar-inverse");
+						$('div.' + id + ' ul.nav').toggleClass("navbar-inverse");
 					}
 
 				});
@@ -148,9 +154,9 @@ define(["jquery",
 		resize: function ( $element, layout ) {
 			render( $element, layout );
 		},
-		paint: function ( $element, layout ) {
-			
-			render( $element, layout );
+		paint: function ( $element, layout) {
+			// console.log(State.getModel().id);
+			render( $element, layout);
 		}
 	};
 });
