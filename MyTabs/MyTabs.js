@@ -1,5 +1,7 @@
 /*global define */
 
+//Jquery used to get image for each tab $('img.item-thumb-img')
+
 define(["jquery",
 	//mashup and extension interface
 	"qlik",
@@ -161,6 +163,75 @@ define(["jquery",
 						}
 					}
 				},
+			    sheets: {
+			        type: "array",
+			        label: "Sheets",
+			        // addTranslation: "Common.Create",
+			        // component: "getSheets",
+			        ref: "sheets",
+			        sheetDef: {
+			          catId: {
+			            ref: "catId",
+			            label: "Category id",
+			            type: "string",
+			            show: false,
+			            defaultValue: "unassigned"
+			          },
+			          order: {
+			            ref: "order",
+			            label: "Order",
+			            type: "integer",
+			            show: false,
+			            defaultValue: -1
+			          },
+			          showSheet: {
+			            type: "boolean",
+			            component: "switch",
+			            translation: "Show sheet?",
+			            ref: "showSheet",
+			            defaultValue: true,
+			            trueOption: {
+			              value: true,
+			              translation: "properties.on"
+			            },
+			            falseOption: {
+			              value: false,
+			              translation: "properties.off"
+			            },
+			            show: true
+			          },
+			          overrideSheet: {
+			            type: "boolean",
+			            component: "switch",
+			            translation: "Override sheet name?",
+			            ref: "overrideSheet",
+			            defaultValue: false,
+			            trueOption: {
+			              value: true,
+			              translation: "properties.on"
+			            },
+			            falseOption: {
+			              value: false,
+			              translation: "properties.off"
+			            },
+			            show: function(a) {
+			              return a.showSheet;
+			            }
+			          },
+			          overrideSheetName: {
+			            ref: "overrideSheetName",
+			            label: "Override sheet name",
+			            type: "string",
+			            expression: "optional",
+			            show: function(a) {
+			              return a.showSheet && a.overrideSheet;
+			            }
+			          }
+			        },
+			        items: {
+			          
+			        }
+			    },
 				settings : {
 					uses : "settings"
 				}
