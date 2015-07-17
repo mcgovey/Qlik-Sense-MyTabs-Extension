@@ -6,18 +6,18 @@ define(["jquery",
 	//mashup and extension interface
 	"qlik",
 	//add stylesheet
-	"text!./style.css",
+	"css!./style.css",
 	//load bootstrap files
-	"text!./css/scoped-twbs.min.css",
+	"css!./css/scoped-twbs.min.css",
 	"client.utils/state",
 	"client.utils/routing",
 	"./js/bootstrap.min"
 	], 
 	function ($, qlik, cssContent, bsCssContent, clientState, clientRedirect) {
 		//apply scoped Bootstrap CSS to header
-		$( "<style>" ).html( cssContent ).appendTo( "head" );
+		//$( "<style>" ).html( cssContent ).appendTo( "head" );
 		//apply scoped Bootstrap CSS to header
-		$( "<style>" ).html( bsCssContent ).appendTo( "head" );
+		//$( "<style>" ).html( bsCssContent ).appendTo( "head" );
 
 		function redirect (sheetId){
 	    	clientRedirect.goToSheet(sheetId, Object.keys(clientState.States)[clientState.state])
