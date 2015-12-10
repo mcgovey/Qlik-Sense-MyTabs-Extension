@@ -1,8 +1,7 @@
 /*global define */
-
-//Jquery used to get image for each tab $('img.item-thumb-img')
-
-define(["jquery",
+define([
+	//Jquery used to get image for each tab $('img.item-thumb-img')
+	"jquery",
 	//mashup and extension interface
 	"qlik",
 	//add stylesheet
@@ -27,22 +26,6 @@ define(["jquery",
 			//create the app button group
 			var html = '', app = qlik.currApp();
 
-			//---- method for redirecting users to different sheet using URL (reloads entire page)
-   //			//get app location and path and save to URL global variable
-   //			var appName = encodeURIComponent(app.id);
-   //        	var http = location.protocol;
-   //        	var slashes = http.concat("//");
-   //        	var hostname = window.location.hostname;
-   //        	var urlPath = "";
-   //        	if(hostname==="localhost")
-   //          {
-   //            urlPath = slashes + hostname + ":4848/sense/app/" + appName + "/sheet/";
-   //          }
-   //        	else
-   //          {
-   //            urlPath = slashes + hostname + "/sense/app/" + appName + "/sheet/";
-   //          }
-
             //set css element
 			$elem.css('overflow', 'auto');
 
@@ -54,7 +37,6 @@ define(["jquery",
 		    var id = "container_" + layout.qInfo.qId;
 
 			$elem.empty();
-
 
 			html += '<div id="navbar" class="navbar-collapse collapse twbs ' + id + '">';
 
