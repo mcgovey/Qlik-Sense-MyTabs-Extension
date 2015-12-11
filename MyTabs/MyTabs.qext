@@ -4,5 +4,5 @@
 	"type" : "visualization",
 	"version": "1.0",
 	"author": "Kevin McGovern",
-	"preview": "table"
+	"icon": "table"
 }

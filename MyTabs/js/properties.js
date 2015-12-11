@@ -1,4 +1,4 @@
-define( [], function () {
+define( ["qlik"], function (qlik) {
     'use strict';
 	var buttonProps = {
 		type : "items",
@@ -19,6 +19,12 @@ define( [], function () {
 			}
 		}
 	};
+	var enabledButton = {
+		ref : "buttons.isEnabled",
+		label : "Show this Sheet",
+		type : "boolean",
+		defaultValue : true
+	};
 	var markerColor = {
         ref : "props.section3.markerColor",
         label : "Change marker color",
@@ -27,26 +33,61 @@ define( [], function () {
         component: "dropdown"
     };
     //----------final properties creation---------------
-    return {
-    		uses : "settings",
-			type : "items",
-			component : "accordion",
-			items : {
-				buttons : buttonProps,
 
-			    sheets: {
-			        type: "expandable-items",
-			        label: "Sheets",
-			        items: {
-						header3: {
-                            type: "items",
-                            label: "Marker",
-                            items: {
-                                markerColor:            markerColor
-                            }
-                        }
-			        }
-			    }
-			}
-		};
+// var sheetPropVar = "";
+var app = qlik.currApp();
+
+var sheetPropVar = app.getAppObjectList( 'sheet', function(reply){
+	console.log("inside func",sheetPropVar);
+	//for each sheet in the workbook, create a definition object
+	$.each(reply.qAppObjectList.qItems, function(key, value) {
+		if(key!==0){
+			sheetPropVar+=', ';
+		}
+		sheetPropVar += 'sheet'+key+':{\
+						type: "items",\
+						label: "'+value.qData.title+'",\
+						items: {\
+							enabled: {\
+								ref : "buttons.isEnabled",\
+								label : "Show this Sheet",\
+								type : "boolean",\
+								defaultValue : true\
+							}\
+						}}';
+	});
+	
+	return JSON.stringify('{'+sheetPropVar+'}');
+});
+
+console.log("outside func",sheetPropVar);
+
+    return {
+        type: "items",
+        component: "accordion",
+        items: {
+            appearance: {
+                uses: "settings"
+            },
+            buttons : buttonProps,
+            configuration : {
+                    component: "expandable-items",
+                    label: "Sheet Configuration",
+                    items: sheetPropVar
+      //               {
+						// sheet0:{
+						// type: "items",
+						// label: "TabUno",
+						// items: {
+						// 	enabled: {
+						// 		ref : "buttons.isEnabled",
+						// 		label : "Show this Sheet",
+						// 		type : "boolean",
+						// 		defaultValue : true
+						// 	}
+						// }}
+      //               }
+            }
+        }
+    };
 });
