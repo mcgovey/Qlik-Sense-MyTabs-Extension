@@ -1,5 +1,6 @@
 /*global define */
 define([
+	'./js/properties',
 	//Jquery used to get image for each tab $('img.item-thumb-img')
 	"jquery",
 	//mashup and extension interface
@@ -12,7 +13,7 @@ define([
 	"client.utils/routing",
 	"./js/bootstrap.min"
 	], 
-	function ($, qlik, cssContent, bsCssContent, clientState, clientRedirect) {
+	function (props, $, qlik, cssContent, bsCssContent, clientState, clientRedirect) {
 		//apply scoped Bootstrap CSS to header
 		//$( "<style>" ).html( cssContent ).appendTo( "head" );
 		//apply scoped Bootstrap CSS to header
@@ -109,114 +110,17 @@ define([
 		}
 
 		return {
-			initialProperties : {
-				version : 1.0,
-				qBookmarkListDef : {
-					qType : "bookmark",
-					qData : {
-						title : "/title",
-						description : "/description"
-					}
-				},
-				qFieldListDef : {
+		definition: props,
+		initialProperties : {
+			version : 1.0,
+			qBookmarkListDef : {
+				qType : "bookmark",
+				qData : {
+					title : "/title",
+					description : "/description"
 				}
 			},
-
-		definition : {
-			type : "items",
-			component : "accordion",
-			items : {
-				buttons : {
-					type : "items",
-					label : "Navbar Options",
-					items : {
-					//create boolean buttons for justification and color theme
-						justified : {
-							ref : "buttons.justified",
-							label : "Fit Tabs Across Full Page",
-							type : "boolean",
-							defaultValue : false
-						},
-						colored : {
-							ref : "buttons.colored",
-							label : "Invert Navigation Theme",
-							type : "boolean",
-							defaultValue : false
-						}
-					}
-				},
-			    sheets: {
-			        type: "array",
-			        label: "Sheets",
-			        // addTranslation: "Common.Create",
-			        // component: "getSheets",
-			        ref: "sheets",
-			        sheetDef: {
-			          catId: {
-			            ref: "catId",
-			            label: "Category id",
-			            type: "string",
-			            show: false,
-			            defaultValue: "unassigned"
-			          },
-			          order: {
-			            ref: "order",
-			            label: "Order",
-			            type: "integer",
-			            show: false,
-			            defaultValue: -1
-			          },
-			          showSheet: {
-			            type: "boolean",
-			            component: "switch",
-			            translation: "Show sheet?",
-			            ref: "showSheet",
-			            defaultValue: true,
-			            trueOption: {
-			              value: true,
-			              translation: "properties.on"
-			            },
-			            falseOption: {
-			              value: false,
-			              translation: "properties.off"
-			            },
-			            show: true
-			          },
-			          overrideSheet: {
-			            type: "boolean",
-			            component: "switch",
-			            translation: "Override sheet name?",
-			            ref: "overrideSheet",
-			            defaultValue: false,
-			            trueOption: {
-			              value: true,
-			              translation: "properties.on"
-			            },
-			            falseOption: {
-			              value: false,
-			              translation: "properties.off"
-			            },
-			            show: function(a) {
-			              return a.showSheet;
-			            }
-			          },
-			          overrideSheetName: {
-			            ref: "overrideSheetName",
-			            label: "Override sheet name",
-			            type: "string",
-			            expression: "optional",
-			            show: function(a) {
-			              return a.showSheet && a.overrideSheet;
-			            }
-			          }
-			        },
-			        items: {
-			          
-			        }
-			    },
-				settings : {
-					uses : "settings"
-				}
+			qFieldListDef : {
 			}
 		},
 		resize: function ( $element, layout ) {
