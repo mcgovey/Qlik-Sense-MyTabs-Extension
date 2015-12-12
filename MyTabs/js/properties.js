@@ -34,17 +34,17 @@ define( ["qlik"], function (qlik) {
     };
     //----------final properties creation---------------
 
-// var sheetPropVar = "";
+var sheetPropVar = "";
 var app = qlik.currApp();
 
-var sheetPropVar = app.getAppObjectList( 'sheet', function(reply){
+app.getAppObjectList( 'sheet', function(reply){
 	console.log("inside func",sheetPropVar);
 	//for each sheet in the workbook, create a definition object
 	$.each(reply.qAppObjectList.qItems, function(key, value) {
 		if(key!==0){
 			sheetPropVar+=', ';
 		}
-		sheetPropVar += 'sheet'+key+':{\
+		window.sheetPropVar += 'sheet'+key+':{\
 						type: "items",\
 						label: "'+value.qData.title+'",\
 						items: {\
@@ -56,11 +56,9 @@ var sheetPropVar = app.getAppObjectList( 'sheet', function(reply){
 							}\
 						}}';
 	});
-	
-	return JSON.stringify('{'+sheetPropVar+'}');
 });
 
-console.log("outside func",sheetPropVar);
+console.log("outside func",$(sheetPropVar));
 
     return {
         type: "items",
