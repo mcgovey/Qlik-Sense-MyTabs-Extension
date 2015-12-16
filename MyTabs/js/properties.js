@@ -1,4 +1,4 @@
-define( ["qlik"], function (qlik) {
+define( ["./sheetList"], function (sheetList) {
     'use strict';
 	var buttonProps = {
 		type : "items",
@@ -34,37 +34,17 @@ define( ["qlik"], function (qlik) {
     };
     //----------final properties creation---------------
 
-var sheetPropVar = "";
-var app = qlik.currApp();
 
-app.getAppObjectList( 'sheet', function(reply){
-	var sheetFuncPropVar='';
-	//for each sheet in the workbook, create a definition object
-	$.each(reply.qAppObjectList.qItems, function(key, value) {
-		if(key!==0){
-			sheetFuncPropVar+=', ';
-		}
-		sheetFuncPropVar += 'sheet'+key+':{\
-						type: "items",\
-						label: "'+value.qData.title+'",\
-						items: {\
-							enabled: {\
-								ref : "buttons.isEnabled",\
-								label : "Show this Sheet",\
-								type : "boolean",\
-								defaultValue : true\
-							}\
-						}}';
-	});
-	setSheetListVar('{'+sheetFuncPropVar+'}');
-});
+console.log($scope);
+// foo(function(sheetListVar){
+	// console.log('var received',sheetList);
 
-function setSheetListVar(sheetListVar){
-	console.log('var received',sheetListVar);
-	sheetPropVar=sheetListVar;
-}
 
-console.log("outside func",sheetPropVar);
+
+	// getValue.then(function(value){console.log('outsidePromiseBeforeReturn',value);});
+// });
+
+// console.log("outside func",sheetPropVar);
 
     return {
         type: "items",
@@ -77,20 +57,20 @@ console.log("outside func",sheetPropVar);
             configuration : {
                     component: "expandable-items",
                     label: "Sheet Configuration",
-                    items: sheetPropVar
-      //               {
-						// sheet0:{
-						// type: "items",
-						// label: "TabUno",
-						// items: {
-						// 	enabled: {
-						// 		ref : "buttons.isEnabled",
-						// 		label : "Show this Sheet",
-						// 		type : "boolean",
-						// 		defaultValue : true
-						// 	}
-						// }}
-      //               }
+                    items: //sheetPropVar
+                    {
+						sheet0:{
+						type: "items",
+						label: "TabUno",
+						items: {
+							enabled: {
+								ref : "buttons.isEnabled",
+								label : "Show this Sheet",
+								type : "boolean",
+								defaultValue : true
+							}
+						}}
+                    }
             }
         }
     };
