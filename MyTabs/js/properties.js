@@ -56,16 +56,18 @@ app.getAppObjectList( 'sheet', function(reply){
 							}\
 						}}';
 	});
-	setSheetListVar('{'+sheetFuncPropVar+'}');
+	// '{'+sheetFuncPropVar+'}';
+	$('#hiddenSpan').html(sheetFuncPropVar);
+	console.log($('#hiddenSpan'));
 });
 
-function setSheetListVar(sheetListVar){
-	console.log('var received',sheetListVar);
-	sheetPropVar=sheetListVar;
-}
+// function setSheetListVar(sheetListVar){
+// 	console.log('var received',sheetListVar);
+// 	sheetPropVar=sheetListVar;
+// }
 
-console.log("outside func",sheetPropVar);
-
+// console.log("outside func",sheetPropVar);
+console.log($('#hiddenSpan'));
     return {
         type: "items",
         component: "accordion",
