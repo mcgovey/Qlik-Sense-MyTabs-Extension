@@ -47,13 +47,42 @@ define( [
  			var sortedData = _.sortBy( data.qAppObjectList.qItems, function ( item ) { 
  				return item.qData.rank; 
  			} );
+ 			_.each( sortedData, function ( item ) {
+				sheets.push( {
+					value: item.qInfo.qId,
+					label: item.qMeta.title
+				} );
+				console.log('sheets', sheets);
+			} );
  			// console.log(sortedData);
- 			_.each( sortedData, function ( item ) { 
- 				sheets.push( { 
- 					value: item.qInfo.qId, 
- 					label: item.qMeta.title 
- 				} ); 
- 			} );
+ 			// _.each( sortedData, function ( item ) {
+ 			// 	var sheetTitle = 'sheet'+item.qInfo.qId;
+ 			// 	console.log('title: ',sheetTitle);
+
+ 			// 	var innerObj = {
+				// 		type: "items",
+				// 		label: item.qMeta.title,
+				// 		items: {
+				// 			enabled: {
+				// 				ref : "buttons.isEnabled",
+				// 				label : "Show this Sheet",
+				// 				type : "boolean",
+				// 				defaultValue : true
+				// 			}
+				// 		}
+				// 	};
+ 			// 	console.log('innerObj: ',innerObj);
+
+ 			// 	var foo = {};
+ 			// 	foo[sheetTitle]=innerObj;
+
+ 			// 	console.log('foo: ',foo);
+
+
+ 			// 	sheets.push( foo );
+ 			// 	console.log('sheets: ',sheets);
+
+ 			// } );
  			// console.log(sheets);
  			return defer.resolve( sheets ); 
  		} ); 
@@ -68,26 +97,24 @@ define( [
 		ref: "props.sheets",
 		options: function () {
 			return getSheetList().then( function ( items ) {
-				console.log('innerItems', items);
+				// console.log('innerItems', items);
 				return items;
 			} );
 		}
 	};
-	console.log('sheetList', sheetList);
+	// console.log('sheetList', sheetList);
 
 	var altSheetList = {
-		item1: function () {
-			return getSheetList().then( function ( items ) {
-				var innerList = {
-						type: "string",
-						component: "dropdown",
-						label: "Select Sheet",
-						ref: "props.sheets3",
-						options: items
-					};
-				console.log('items:', innerList);
-				return innerList;
-			} );
+		component: "expandable-items",
+		label: "Sheet Configuration",
+		items: {
+			// sheetList: sheetList,
+			altSheetList: function () {
+				return getSheetList().then( function ( items ) {
+					console.log('items:', items);
+					return items;
+				} );
+			}
 		}
 	};
 	console.log('altSheetList', altSheetList);
@@ -116,12 +143,12 @@ define( [
                 uses: "settings"
             },
             buttons : buttonProps,
-            behavior: {
-				type: "items",
-				label: "Sheet Configuration",
+            behavior: altSheetList,
+         	behavior2:    {
+				component: "items",
+				label: "Sheet Configuration3",
 				items: {
-					sheetList: sheetList,
-					altSheetList: altSheetList
+					sheetList: sheetList
 				}
 			},
             configuration : {
