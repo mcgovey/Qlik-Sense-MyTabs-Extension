@@ -1,6 +1,6 @@
 /*global define */
 define([
-	'./js/properties',
+	'./js/properties-snippet',
 	//Jquery used to get image for each tab $('img.item-thumb-img')
 	"jquery",
 	//mashup and extension interface

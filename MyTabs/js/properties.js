@@ -38,9 +38,11 @@ define( [
     };
 
     var app = qlik.currApp();
-	var getSheetList = function () { 
 
- 		var defer = $q.defer();
+
+	// var getSheetList = function () { 
+
+ // 		var defer = $q.defer();
 
  		app.getAppObjectList( function ( data ) { 
  			var sheets = []; 
@@ -52,87 +54,94 @@ define( [
 					value: item.qInfo.qId,
 					label: item.qMeta.title
 				} );
-				console.log('sheets', sheets);
 			} );
- 			// console.log(sortedData);
- 			// _.each( sortedData, function ( item ) {
- 			// 	var sheetTitle = 'sheet'+item.qInfo.qId;
- 			// 	console.log('title: ',sheetTitle);
-
- 			// 	var innerObj = {
-				// 		type: "items",
-				// 		label: item.qMeta.title,
-				// 		items: {
-				// 			enabled: {
-				// 				ref : "buttons.isEnabled",
-				// 				label : "Show this Sheet",
-				// 				type : "boolean",
-				// 				defaultValue : true
-				// 			}
-				// 		}
-				// 	};
- 			// 	console.log('innerObj: ',innerObj);
-
- 			// 	var foo = {};
- 			// 	foo[sheetTitle]=innerObj;
-
- 			// 	console.log('foo: ',foo);
+ 			// return defer.resolve( sheets ); 
+ 			console.log('sheets1',JSON.stringify(sheets));
+ 		} ); 
+ 		// return defer.promise; 
+	// };
 
 
- 			// 	sheets.push( foo );
- 			// 	console.log('sheets: ',sheets);
 
- 			// } );
- 			// console.log(sheets);
+ 		app.getAppObjectList( function ( data ) { 
+ 			var sheets = []; 
+ 			var sortedData = _.sortBy( data.qAppObjectList.qItems, function ( item ) { 
+ 				return item.qData.rank; 
+ 			} );
+ 			_.each( sortedData, function ( item ) {
+ 				var sheetTitle = 'sheet'+item.qInfo.qId;
+
+ 				var innerObj = {
+						type: "items",
+						label: item.qMeta.title,
+						items: {
+							enabledObj: {
+								ref : "buttons.isEnabled",
+								label : "Show this Sheet",
+								type : "boolean",
+								defaultValue : true
+							}
+						}
+					};
+
+ 				var foo = {};
+ 				foo[sheetTitle]=innerObj;
+
+ 				sheets.push( foo );
+
+ 			} );
+ 			console.log('sheets2',JSON.stringify(sheets[0]));
+ 		} ); 
+
+	var getSheetListFormatted = function () { 
+
+ 		var defer = $q.defer();
+
+ 		app.getAppObjectList( function ( data ) { 
+ 			var sheets = []; 
+ 			var sortedData = _.sortBy( data.qAppObjectList.qItems, function ( item ) { 
+ 				return item.qData.rank; 
+ 			} );
+ 			_.each( sortedData, function ( item ) {
+ 				var sheetTitle = 'sheet'+item.qInfo.qId;
+
+ 				var innerObj = {
+						type: "items",
+						label: item.qMeta.title,
+						items: {
+							enabledObj: {
+								ref : "buttons.isEnabled",
+								label : "Show this Sheet",
+								type : "boolean",
+								defaultValue : true
+							}
+						}
+					};
+
+ 				var foo = {};
+ 				foo[sheetTitle]=innerObj;
+
+ 				sheets.push( foo );
+
+ 			} );
  			return defer.resolve( sheets ); 
  		} ); 
 
  		return defer.promise; 
 	};
 
-	var sheetList = {
-		type: "string",
-		component: "dropdown",
-		label: "Select Sheet",
-		ref: "props.sheets",
-		options: function () {
-			return getSheetList().then( function ( items ) {
-				// console.log('innerItems', items);
-				return items;
+	var altSheetList = {
+		// type: "items",
+		component: "expandable-items",
+		label: "Sheet Configuration",
+		items: function () {
+			return getSheetListFormatted().then( function ( items ) {
+				console.log('this is called');
+				return items[0];
 			} );
 		}
 	};
-	// console.log('sheetList', sheetList);
-
-	var altSheetList = {
-		component: "expandable-items",
-		label: "Sheet Configuration",
-		items: {
-			// sheetList: sheetList,
-			altSheetList: function () {
-				return getSheetList().then( function ( items ) {
-					console.log('items:', items);
-					return items;
-				} );
-			}
-		}
-	};
-	console.log('altSheetList', altSheetList);
-         
-      //               items: //sheetPropVar
-      //               {
-						// sheet0:{
-						// type: "items",
-						// label: "TabUno",
-						// items: {
-						// 	enabled: {
-						// 		ref : "buttons.isEnabled",
-						// 		label : "Show this Sheet",
-						// 		type : "boolean",
-						// 		defaultValue : true
-						// 	}
-						// }}
-      //               }
+	// console.log('altSheetList', altSheetList);
 
     //----------final properties creation---------------
     return {
@@ -144,13 +153,6 @@ define( [
             },
             buttons : buttonProps,
             behavior: altSheetList,
-         	behavior2:    {
-				component: "items",
-				label: "Sheet Configuration3",
-				items: {
-					sheetList: sheetList
-				}
-			},
             configuration : {
                     component: "expandable-items",
                     label: "Sheet Configuration Old",
