@@ -32,27 +32,6 @@ define( ['qlik','ng!$q','underscore'], function (qlik, $q, _) {
  		} ); 
  		return defer.promise; 
 	};
-
-	var getSheetList = function () {
-
-		var defer = $q.defer();
-
-		app.getAppObjectList( function ( data ) {
-			var sheets = [];
-			var sortedData = _.sortBy( data.qAppObjectList.qItems, function ( item ) {
-				return item.qData.rank;
-			} );
-			_.each( sortedData, function ( item ) {
-				sheets.push( {
-					value: item.qInfo.qId,
-					label: item.qMeta.title
-				} );
-			} );
-			return defer.resolve( sheets );
-		} );
-
-		return defer.promise;
-	};
 	// getSheetListFormatted().then( function ( items ) {
 	// 	console.log('success: ',items);
 	// },function (errorMsg) {
@@ -71,40 +50,7 @@ define( ['qlik','ng!$q','underscore'], function (qlik, $q, _) {
 		},
 		label: "Sheet Configuration"
 	};
-
-	var sheetList = {
-		component: "expandable-items",
-		items: function () { 
-			return getSheetList().then( function ( items ) {
-				console.log('success: ', items);
-	 			var sheets = {};
-	 			_.each( items, function ( item ) {
-	 				var sheetTitle = 'sheet'+item.value;
-
-	 				var innerObj = {
-							type: "items",
-							label: item.label,
-							items: {
-								enabled: {
-									ref : "buttons.isEnabled",
-									label : "Show this Sheet",
-									type : "boolean",
-									defaultValue : true
-								}
-							}
-						};
-
-	 				sheets[sheetTitle]=innerObj;
-	 			} );
-				return sheets;
-			},function (errorMsg) {
-				console.log('error: ',errorMsg);
-			}
-		);
-		},
-		label: "Sheet Configuration"
-	};
-	console.log('sheetList: ',sheetList);
+	console.log('altSheetList: ',altSheetList);
 
 	var settings = {
 		appearance: {

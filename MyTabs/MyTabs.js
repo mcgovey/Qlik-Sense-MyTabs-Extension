@@ -1,19 +1,23 @@
 /*global define */
 define([
-	'./js/properties-snippet',
-	//Jquery used to get image for each tab $('img.item-thumb-img')
-	"jquery",
-	//mashup and extension interface
-	"qlik",
-	//add stylesheet
-	"css!./style.css",
-	//load bootstrap files
-	"css!./css/scoped-twbs.min.css",
-	"client.utils/state",
-	"client.utils/routing",
-	"./js/bootstrap.min"
-	], 
-	function (props, $, qlik, cssContent, bsCssContent, clientState, clientRedirect) {
+	'./js/properties-snippet'
+	// jQuery used to get image for each tab $('img.item-thumb-img')
+	,"jquery"
+	// mashup and extension interface
+	,"qlik"
+	// load qlik angular
+	,"qvangular"
+	// load html template
+	,"text!./template.html"
+	// add stylesheet
+	,"css!./style.css"
+	// load bootstrap files
+	,"css!./css/scoped-twbs.min.css"
+	,"client.utils/state"
+	,"client.utils/routing"
+	,"./js/bootstrap.min"
+	],
+	function (props, $, qlik, qvangular, template, cssContent, bsCssContent, clientState, clientRedirect) {
 		//apply scoped Bootstrap CSS to header
 		//$( "<style>" ).html( cssContent ).appendTo( "head" );
 		//apply scoped Bootstrap CSS to header
@@ -57,7 +61,7 @@ define([
 
 					//give the link the same name as the sheet
 					html += value.qData.title;
-					
+
 					html += '</a>';
 					html += '</li>';
 
@@ -96,7 +100,7 @@ define([
 				//set the attribute for the list box of the active sheet to active
 				$('#' + activeSheetID).attr('class','active');
 
-				//Toggle Tab Justification	
+				//Toggle Tab Justification
 				if(layout.buttons.justified) {
 					$('div.' + id + ' ul.nav').toggleClass("nav-justified");
 				}
@@ -110,24 +114,29 @@ define([
 		}
 
 		return {
-		definition: props,
-		initialProperties : {
-			version : 1.0,
-			qBookmarkListDef : {
-				qType : "bookmark",
-				qData : {
-					title : "/title",
-					description : "/description"
+
+			template : template,
+			definition: props,
+			initialProperties : {
+				version : 1.0,
+				qBookmarkListDef : {
+					qType : "bookmark",
+					qData : {
+						title : "/title",
+						description : "/description"
+					}
+				},
+				qFieldListDef : {
 				}
 			},
-			qFieldListDef : {
-			}
-		},
-		resize: function ( $element, layout ) {
-			render( $element, layout );
-		},
-		paint: function ( $element, layout) {
-			render( $element, layout);
-		}
+			resize: function ( $element, layout ) {
+				render( $element, layout );
+			},
+			paint: function ( $element, layout) {
+				render( $element, layout);
+			},
+			controller: ['$scope', function ( $scope ) {
+            console.log($scope);
+      }]
 	};
 });
