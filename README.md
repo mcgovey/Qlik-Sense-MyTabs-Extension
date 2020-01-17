@@ -1,4 +1,8 @@
 # Qlik-Sense-MyTabs-Extension
+
+## Important Note
+Please note, this project is no longer being actively maintained. If you would like to take ownership of the project, please open an issue and I will happily transfer the project. I will still monitor changes so if you submit a pull request, I will happily merge it back into the project. Thank you!
+
 Qlik Sense Extension to Show List of Tabs in a Qlik Sense App
 
 This extension seeks to recreate a tab like header that can be placed at the top of Qlik Sense qvf files.  The extension is intended for use inside of Qlik Sense, it will not work in mashups.  The extension lists all tabs in a Qlik Sense App, includes a reference to the current tab, allows the user to click a tab to navigate to a different page in the app, and provides some minor formatting features.
